@@ -18,7 +18,6 @@ fi
 ## JE
 function _process_je() {
   APP_EXECSTART="/bin/bash -c 'java -jar $APP_DIR/server.jar'"
-  APP_EXECSTOP="/bin/bash -c 'echo stop > /var/run/$APP_NAME.stdin'"
 
   url='http://launchermeta.mojang.com/mc/game/version_manifest.json'
   url=$(curl -fsSL "$url" | jq -r ".versions[] | select(.id==\"${APP_VERSION}\").url")
@@ -29,7 +28,6 @@ function _process_je() {
 ## BE
 function _process_be() {
   APP_EXECSTART="/bin/bash -c '$APP_DIR/bedrock_server'"
-  APP_EXECSTOP="/bin/bash -c 'echo stop > /var/run/$APP_NAME.stdin'"
 
   url="https://minecraft.azureedge.net/bin-linux/bedrock-server-$APP_VERSION.zip"
   curl -fsSL "$url" -o /opt/$APP_NAME/server.zip
@@ -64,7 +62,6 @@ StandardOutput=journal
 StandardError=journal
 WorkingDirectory=$APP_DIR
 ExecStart=$APP_EXECSTART
-ExecStop=$APP_EXECSTOP
 
 [Install]
 WantedBy=multi-user.target
