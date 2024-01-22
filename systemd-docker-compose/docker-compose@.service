@@ -1,0 +1,16 @@
+[Unit]
+Description=%i by docker compose
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+
+Environment=COMPOSE_DIR=/opt/docker-compose/%i
+
+ExecStartPre=-/usr/bin/docker compose --project-directory ${COMPOSE_DIR} down
+ExecStart=/usr/bin/docker compose --project-directory ${COMPOSE_DIR} up
+ExecStop=/usr/bin/docker compose --project-directory ${COMPOSE_DIR} down
+
+[Install]
+WantedBy=multi-user.target
